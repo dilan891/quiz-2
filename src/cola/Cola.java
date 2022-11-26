@@ -22,6 +22,7 @@ public class Cola {
             last = nodo;
             size++;
         }else{
+            nodo.setSiguiente(last);
             last.setAnterior(nodo);
             last = nodo;
             size++;
@@ -42,6 +43,19 @@ public class Cola {
         if (first != null) {
             first = first.getAnterior();
             size--;
+        }
+        return aux;
+    }
+    
+    public NodoCola removeLast(){
+        NodoCola aux = first;
+        while(aux != null){
+            if (aux.getAnterior() == last){
+                last = aux;
+                last.setAnterior(null);
+                size--;
+            }
+            aux = aux.getAnterior();
         }
         return aux;
     }

@@ -90,11 +90,12 @@ public class ArbolBinario {
         }
         recorrer(nodo.getIzquierda(), listaCola);
         recorrer(nodo.getDerecha(), listaCola);
-        cola.remover();
+        
+        cola.removeLast();
     }
     
     public void buscarPalabra(String palabra){
-        recorrer(raiz,null);
+        recorrer(raiz,cola);
     }
     
     public NodoArbol getRaiz() {

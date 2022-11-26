@@ -9,6 +9,7 @@ public class NodoCola {
     
     private String elemento;
     private NodoCola anterior;
+    private NodoCola siguiente;
     
     public NodoCola(String elemento) {
         this.elemento = elemento;
@@ -28,6 +29,14 @@ public class NodoCola {
 
     public void setAnterior(NodoCola anterior) {
         this.anterior = anterior;
+    }
+
+    public void setSiguiente(NodoCola siguiente) {
+        this.siguiente = siguiente;
+    }
+
+    public NodoCola getSiguiente() {
+        return siguiente;
     }
     
    
