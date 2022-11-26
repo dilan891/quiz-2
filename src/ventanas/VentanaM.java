@@ -97,6 +97,11 @@ public class VentanaM extends javax.swing.JFrame {
         jPanel1.add(buscarPalabra, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 240, 160, -1));
 
         jButton3.setText("Buscar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 280, -1, -1));
 
         jLabel2.setText("Busca palabra:");
@@ -158,6 +163,7 @@ public class VentanaM extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (arbol == null) {
             JOptionPane.showMessageDialog(null, "No se ha cargado txt");
+            return;
         }
         Lista palabrasFinds = arbol.getPalabras();
         String frase = "";
@@ -170,6 +176,21 @@ public class VentanaM extends javax.swing.JFrame {
     private void pathTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pathTxtActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_pathTxtActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        if(arbol == null){
+            JOptionPane.showMessageDialog(null, "No se ha cargado txt");
+            return;
+        }
+        Lista lista = arbol.getPalabras();
+        String palabra = buscarPalabra.getText();
+        if(lista.buscarPalabra(palabra)){
+            JOptionPane.showMessageDialog(null, "La palabra se encuentra en el arbol");
+        }else{
+            JOptionPane.showMessageDialog(null, "No se ha encontrado la palabra");
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField buscarPalabra;
