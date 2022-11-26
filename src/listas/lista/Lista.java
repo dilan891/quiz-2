@@ -131,4 +131,14 @@ public class Lista{
         return "";
     }
 
+    public Boolean buscarPalabra(String palabra){
+        Nodo aux = first;
+        while(aux != null){
+            if(aux.getElemento() == palabra ){
+                return true;
+            }
+            aux = aux.getSiguiente();     
+        }
+        return false;
+    } 
 }

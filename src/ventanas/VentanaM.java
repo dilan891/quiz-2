@@ -2,6 +2,7 @@ package ventanas;
 
 import Arbol.ArbolBinario;
 import Arbol.NodoArbol;
+import javax.swing.JOptionPane;
 import listas.lista.Lista;
 import quiz2.arvhivo.AccestTxt;
 
@@ -40,6 +41,9 @@ public class VentanaM extends javax.swing.JFrame {
         palabras = new javax.swing.JTextArea();
         jButton2 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        buscarPalabra = new javax.swing.JTextField();
+        jButton3 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -51,25 +55,32 @@ public class VentanaM extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 270, -1, -1));
-        jPanel1.add(pathTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 240, 270, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 170, -1, -1));
+
+        pathTxt.setText("../quiz2/src/quiz2/arvhivo/palabras.txt");
+        pathTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pathTxtActionPerformed(evt);
+            }
+        });
+        jPanel1.add(pathTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 130, 270, -1));
 
         jLabel1.setText("Path txt:");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 240, -1, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 130, -1, -1));
 
         palabras.setColumns(20);
         palabras.setRows(5);
         jScrollPane1.setViewportView(palabras);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 50, -1, 380));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 70, -1, 380));
 
-        jButton2.setText("Mostrar");
+        jButton2.setText("Mostrar Todo");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 330, -1, -1));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 380, -1, -1));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -83,6 +94,13 @@ public class VentanaM extends javax.swing.JFrame {
         );
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 440, -1, -1));
+        jPanel1.add(buscarPalabra, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 240, 160, -1));
+
+        jButton3.setText("Buscar");
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 280, -1, -1));
+
+        jLabel2.setText("Busca palabra:");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 240, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -101,7 +119,7 @@ public class VentanaM extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         String path = pathTxt.getText();
-        AccestTxt txt = new AccestTxt("./quiz2/src/quiz2/arvhivo/palabras.txt");
+        AccestTxt txt = new AccestTxt(path);
         this.datos = txt.readTxt();
         this.arbol = new ArbolBinario();
         String[] linea = datos.split("\n");
@@ -111,6 +129,10 @@ public class VentanaM extends javax.swing.JFrame {
             String[] data = linea[i].split(",");
             for (int j = 0; j < data.length; j++) {
                 data[j] = data[j].replace(" ", "");
+//                if (data[j].length() > 1 && !"null".equals(data[j])  && !"left".equals(data[j]) && !"right".equals(data[j])) {
+//                    JOptionPane.showMessageDialog(null, "Error al introducir los datos del txt, verifique que este bien escrito");
+//                    return;
+//                }
             }
             if (!agregado) {
                 arbol.setRaiz(new NodoArbol(data[0]));
@@ -120,8 +142,11 @@ public class VentanaM extends javax.swing.JFrame {
                 aux = arbol.encontrarNodo(data[1], arbol.getRaiz());
                 if (data[2].equals("left")) {
                     dirrecion = 0;
-                }else{
+                }else if(data[2].equals("right")){
                     dirrecion = 1;
+                }else{
+                    JOptionPane.showMessageDialog(null, "Error");
+                    return;
                 }
                 arbol.agregar(aux, data[0],dirrecion);
             }          
@@ -131,14 +156,28 @@ public class VentanaM extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        if (arbol == null) {
+            JOptionPane.showMessageDialog(null, "No se ha cargado txt");
+        }
         Lista palabrasFinds = arbol.getPalabras();
-        palabras.setText(palabrasFinds.mostrarIndice(0));
+        String frase = "";
+        for (int i = 0; i < palabrasFinds.length(); i++) {
+            frase += palabrasFinds.mostrarIndice(i) + "\n";
+        }
+        palabras.setText(frase);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void pathTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pathTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pathTxtActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField buscarPalabra;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

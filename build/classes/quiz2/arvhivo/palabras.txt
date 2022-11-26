@@ -9,7 +9,7 @@ A, L, right
 E, P, right
 R, E, left
 I, R, left
-C, I, righ
+C, I, right
 O, C, right
 A, R, right
 S, E, right
