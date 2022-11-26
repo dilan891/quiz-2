@@ -1,0 +1,16 @@
+P,null,null
+A, P, left
+T, A, left
+O, T, right
+L, A, right
+M, L, left
+A, M, right
+A, L, right
+E, P, right
+R, E, left
+I, R, left
+C, I, righ
+O, C, right
+A, R, right
+S, E, right
+O, S, right
