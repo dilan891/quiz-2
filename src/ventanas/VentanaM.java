@@ -1,5 +1,8 @@
 package ventanas;
 
+import Arbol.ArbolBinario;
+import Arbol.NodoArbol;
+import listas.lista.Lista;
 import quiz2.arvhivo.AccestTxt;
 
 /**
@@ -9,12 +12,15 @@ import quiz2.arvhivo.AccestTxt;
 public class VentanaM extends javax.swing.JFrame {
 
     private String datos = "";
+    private ArbolBinario arbol;
     
     /**
      * Creates new form VentanaM
      */
     public VentanaM() {
+        this.arbol = null;
         initComponents();
+        this.setTitle("Arbol de letras");
     }
 
     /**
@@ -30,6 +36,10 @@ public class VentanaM extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         pathTxt = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        palabras = new javax.swing.JTextArea();
+        jButton2 = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -41,11 +51,38 @@ public class VentanaM extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 110, -1, -1));
-        jPanel1.add(pathTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 50, 270, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 270, -1, -1));
+        jPanel1.add(pathTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 240, 270, -1));
 
         jLabel1.setText("Path txt:");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, -1, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 240, -1, -1));
+
+        palabras.setColumns(20);
+        palabras.setRows(5);
+        jScrollPane1.setViewportView(palabras);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 50, -1, 380));
+
+        jButton2.setText("Mostrar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 330, -1, -1));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 440, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -64,14 +101,48 @@ public class VentanaM extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         String path = pathTxt.getText();
-        AccestTxt txt = new AccestTxt("A:/programa/programacion/java/quiz2/src/quiz2/arvhivo/palabras.txt");
+        AccestTxt txt = new AccestTxt("./quiz2/src/quiz2/arvhivo/palabras.txt");
         this.datos = txt.readTxt();
+        this.arbol = new ArbolBinario();
+        String[] linea = datos.split("\n");
+        NodoArbol aux = arbol.getRaiz();
+        Boolean agregado = false;
+        for (int i = 0; i < linea.length; i++) {
+            String[] data = linea[i].split(",");
+            for (int j = 0; j < data.length; j++) {
+                data[j] = data[j].replace(" ", "");
+            }
+            if (!agregado) {
+                arbol.setRaiz(new NodoArbol(data[0]));
+                agregado = true;
+            }else{
+                int dirrecion = -1;
+                aux = arbol.encontrarNodo(data[1], arbol.getRaiz());
+                if (data[2].equals("left")) {
+                    dirrecion = 0;
+                }else{
+                    dirrecion = 1;
+                }
+                arbol.agregar(aux, data[0],dirrecion);
+            }          
+        }
+        arbol.buscarPalabra();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        Lista palabrasFinds = arbol.getPalabras();
+        palabras.setText(palabrasFinds.mostrarIndice(0));
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea palabras;
     private javax.swing.JTextField pathTxt;
     // End of variables declaration//GEN-END:variables
 }

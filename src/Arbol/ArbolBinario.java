@@ -12,10 +12,11 @@ public class ArbolBinario {
     
     private NodoArbol raiz;
     private Cola cola = new Cola();
-    //private Cola colaAux = new Cola();
+    private Lista palabras;
     
     public ArbolBinario() {
         this.raiz = null;
+        this.palabras = new Lista();
     }
 
     /**
@@ -67,19 +68,6 @@ public class ArbolBinario {
         return null;
     }
     
-    public void verificarPalabra(){
-        NodoCola nodoAux;
-        String palabra = "";
-        while(true){
-            nodoAux = cola.remover();
-            if(nodoAux == null){
-                break;
-            }
-            palabra = palabra + nodoAux.getElemento();
-        }
-        //System.out.println(palabra);
-    }
-    
     public void recorrer(NodoArbol nodo,Cola listaCola){
         if(nodo == null){
             return;
@@ -87,6 +75,7 @@ public class ArbolBinario {
         cola.insertar(nodo.getInfo());
         if (nodo.getDerecha() == null && nodo.getIzquierda() == null) {
             cola.mostrar();
+            palabras.append(cola.encolarString());
         }
         recorrer(nodo.getIzquierda(), listaCola);
         recorrer(nodo.getDerecha(), listaCola);
@@ -94,8 +83,9 @@ public class ArbolBinario {
         cola.removeLast();
     }
     
-    public void buscarPalabra(String palabra){
+    public void buscarPalabra(){
         recorrer(raiz,cola);
+        palabras.mostrar();
     }
     
     public NodoArbol getRaiz() {
@@ -104,6 +94,13 @@ public class ArbolBinario {
     
     public void setRaiz(NodoArbol raiz) {
         this.raiz = raiz;
+    }
+    
+    public Lista getPalabras(){
+        if (palabras != null) {
+            return palabras;
+        }
+        return null;
     }
     
 }

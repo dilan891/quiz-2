@@ -47,6 +47,16 @@ public class Cola {
         return aux;
     }
     
+    public String encolarString(){
+        String palabra = "";
+        NodoCola aux = first;
+        while(aux != null){
+            palabra += aux.getElemento();
+            aux = aux.getAnterior();
+        }
+        return palabra;
+    }
+    
     public NodoCola removeLast(){
         NodoCola aux = first;
         while(aux != null){
